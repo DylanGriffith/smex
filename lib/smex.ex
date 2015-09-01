@@ -1,0 +1,2 @@
+defmodule Smex do
+end
