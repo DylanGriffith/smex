@@ -27,6 +27,10 @@ defmodule Smex.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    []
+    [
+      {:amqp, "~> 0.1"},
+      {:murmur, "~> 0.2"},
+      {:exprotobuf, github: "DylanGriffith/exprotobuf", branch: "dgvz"}
+    ]
   end
 end
