@@ -1,0 +1,10 @@
+package ACL;
+
+message Term {
+  required int32 id = 1;
+  required string term = 2;
+}
+
+message Terms {
+  repeated Term terms = 1;
+}

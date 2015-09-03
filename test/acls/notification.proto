@@ -1,0 +1,11 @@
+package ACL.Notification;
+import 'terms.proto';
+
+message Update {
+  required string update = 1;
+  required ACL.Term term = 2;
+}
+
+message Updates {
+  repeated Update updates = 1;
+}

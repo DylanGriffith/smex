@@ -1,0 +1,5 @@
+package ACL;
+
+message Null {
+  required string null = 1;
+}
