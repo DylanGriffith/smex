@@ -1,0 +1,1 @@
+- add some more properties to `Smex.send`. Including: `message_id`, `priority:0`, `delivery_mode: 2`, `content_type:  application/octet-stream`
