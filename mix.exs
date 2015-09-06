@@ -16,7 +16,7 @@ defmodule Smex.Mixfile do
   def application do
     [
       mod: {Smex, []},
-      applications: [:logger]
+      applications: [:logger, :amqp]
     ]
   end
 

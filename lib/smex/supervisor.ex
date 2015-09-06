@@ -7,7 +7,8 @@ defmodule Smex.Supervisor do
 
   def init([]) do
     children = [
-      worker(Smex.ACL, [])
+      worker(Smex.ACL, []),
+      #      worker(Smex.Messaging, [])
     ]
 
     supervise(children, strategy: :one_for_one)
