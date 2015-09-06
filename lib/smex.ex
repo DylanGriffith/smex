@@ -5,8 +5,8 @@ defmodule Smex do
     Smex.Supervisor.start_link
   end
 
-  def publish(exchange_name, payload, opts \\ []) do
-    opts = opts |> Keyword.put(:exchange_name, exchange_name)|> Enum.into %{}
+  def publish(destination, payload, opts \\ []) do
+    opts = opts |> Keyword.put(:destination, destination)|> Enum.into %{}
     publisher = Map.merge(%Smex.Messaging.Publisher{}, opts)
     Smex.Messaging.Publisher.publish(publisher, payload)
   end
