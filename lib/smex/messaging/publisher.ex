@@ -17,6 +17,8 @@ defmodule Smex.Messaging.Publisher do
 
     type = Map.get(payload, :__struct__)
 
-    AMQP.Basic.publish(chan, exchange_name, routing_key, type.encode(payload), type: Smex.ACL.acl_type_hash(type))
+    opts = [type: Smex.ACL.acl_type_hash(type), content_type: 'application/octet-stream']
+
+    AMQP.Basic.publish(chan, exchange_name, routing_key, type.encode(payload), opts)
   end
 end
