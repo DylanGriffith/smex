@@ -2,13 +2,12 @@ defmodule Smex.Messaging.Publisher do
   defstruct destination: nil, prefetch: 1, fanout: false, fanout_persistence: true, fanout_queue_suffix: nil
 
   def publish(publisher = %Smex.Messaging.Publisher{}, payload) do
-    {:ok, conn} = AMQP.Connection.open(Smex.conn_string)
-    {:ok, chan} = AMQP.Channel.open(conn)
+    chan = Smex.Messaging.channel
 
     exchange_name = "smith.#{publisher.destination}"
     routing_key = exchange_name
 
-    exchange = AMQP.Exchange.direct(chan, exchange_name, durable: true, auto_delete: false)
+    AMQP.Exchange.direct(chan, exchange_name, durable: true, auto_delete: false)
 
     if !publisher.fanout do
       AMQP.Queue.declare(chan, exchange_name, durable: true, auto_delete: false)
