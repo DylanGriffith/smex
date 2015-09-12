@@ -19,7 +19,7 @@ defmodule Smex.Messaging do
     {:ok, {connection, channel}}
   end
 
-  def handle_call(:channel, _from, state = {connection = %AMQP.Connection{}, channel = %AMQP.Channel{}}) do
+  def handle_call(:channel, _from, state = {_connection = %AMQP.Connection{}, channel = %AMQP.Channel{}}) do
     {:reply, channel, state}
   end
 end
