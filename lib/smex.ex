@@ -5,15 +5,25 @@ defmodule Smex do
     Smex.Supervisor.start_link
   end
 
+  @doc """
+  Publish to a specific exchange.
+  """
   def publish(destination, payload, opts \\ []) do
     opts = opts |> Keyword.put(:destination, destination)|> Enum.into %{}
     publisher = Map.merge(%Smex.Messaging.Publisher{}, opts)
     Smex.Messaging.Publisher.publish(publisher, payload)
   end
 
-  def subscribe(exchange_name, opts, fun) do
+  @doc """
+  Ack the message.
+  """
+  def ack(channel, tag) do
+    AMQP.Basic.ack(channel, tag)
   end
 
+  @doc """
+  Connection string for rabbitmq.
+  """
   def conn_string do
     System.get_env("RABBITMQ_URL") || "amqp://guest:guest@localhost"
   end
