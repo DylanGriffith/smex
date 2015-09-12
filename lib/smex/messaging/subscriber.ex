@@ -3,6 +3,21 @@ defmodule Smex.Messaging.Subscriber do
 
   defstruct queue_name: nil, prefetch: 1, fanout: false, fanout_persistence: true, fanout_queue_suffix: nil, type: nil
 
+  def start_link(module) do
+    GenServer.start_link(module, [])
+  end
+
+  def start(module) do
+    GenServer.start_link(module, [])
+  end
+
+  @doc """
+  Cancel a running subscriber.
+  """
+  def cancel(pid) do
+    GenServer.call(pid, :cancel)
+  end
+
   defmacro __using__(opts) do
 
     quote do
@@ -33,6 +48,10 @@ defmodule Smex.Messaging.Subscriber do
         {:ok, %{inner_state: state, subscriber: subscriber, channel: channel}}
       end
 
+      def handle_call(:cancel, _from, state) do
+        {:stop, :normal, state}
+      end
+
       def handle_info({:basic_consume_ok, %{consumer_tag: consumer_tag}}, chan) do
         {:noreply, chan}
       end
@@ -52,7 +71,15 @@ defmodule Smex.Messaging.Subscriber do
         type = Smex.ACL.acl_type_from_hash(type_hash)
         if type == state[:subscriber].type do
           # TODO: Consider supporting updating the state somehow from the class using this module.
-          spawn fn -> consume(state[:inner_state], state[:channel], type.decode(payload), tag, redelivered) end
+          message = %{
+            state: state[:inner_state],
+            channel: state[:channel],
+            payload: type.decode(payload),
+            tag: tag,
+            redelivered: redelivered,
+            process: self
+          }
+          spawn fn -> consume(message) end
         else
           # TODO: Call handler function. Have default handler function implementation that sends to error queue.
           raise "unsupported ACL type given with hash: #{type_hash} and type: #{type}"

@@ -16,26 +16,23 @@ defmodule SmexTest do
     defmodule TestSubscriber do
       use Smex.Messaging.Subscriber, queue_name: "some_test_queue", type: ACL.Null
 
-      def start_link do
-        GenServer.start_link(__MODULE__, [])
+      def start do
+        Smex.Messaging.Subscriber.start(__MODULE__)
       end
 
       def bootup do
         {:ok, %{mystate: true}}
       end
 
-      def consume(_state, channel, payload, tag, _redelivered) do
+      def consume(%{channel: channel, payload: payload, tag: tag, process: process}) do
         assert payload.__struct__ == ACL.Null
         Smex.ack(channel, tag)
+        Smex.Messaging.Subscriber.cancel(process)
       end
     end
 
-    # TODO: I don't think this test actually does anything apart from assert
-    # things compile. The only way I can think to get this to work is to
-    # somehow have this pid sent into the TestSubscriber on startup and then
-    # have the TestSubscriber `send` to that pid when it has actually consumed
-    # some messages then I can `receive` here and block until stuff actually
-    # happens.
-    TestSubscriber.start_link
+    {:ok, subscriber} = TestSubscriber.start
+    ref  = Process.monitor(subscriber)
+    assert_receive {:DOWN, ^ref, :process, _, :normal}, 500
   end
 end
