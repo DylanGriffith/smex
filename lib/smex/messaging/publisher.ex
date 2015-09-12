@@ -7,6 +7,7 @@ defmodule Smex.Messaging.Publisher do
     exchange_name = "smith.#{publisher.destination}"
     routing_key = exchange_name
 
+    # TODO: Support fanout
     AMQP.Exchange.direct(chan, exchange_name, durable: true, auto_delete: false)
 
     if !publisher.fanout do
