@@ -30,17 +30,31 @@ defmodule Smex.Messaging.Subscriber do
         AMQP.Basic.qos(channel, prefetch_count: subscriber.prefetch)
 
         exchange_name = "smith.#{subscriber.queue_name}"
-        queue_name = exchange_name # TODO: Support fanout
-        routing_key = exchange_name
-        error_queue = "#{queue_name}.error"
+        if subscriber.fanout do
+          if subscriber.fanout_persistence do
+            if !subscriber.fanout_queue_suffix do
+              raise "fanout_queue_suffix required unless fanout_persistence=false"
+            end
+            queue_name = "#{exchange_name}.#{subscriber.fanout_queue_suffix}"
+          else
+            # Here we use a random queue name because we don't care about it
+            # being persistent
+            queue_name = ""
+          end
+        else
+          queue_name = exchange_name
+        end
 
-        # Invalid messages will be sent here
-        AMQP.Queue.declare(channel, error_queue, durable: subscriber.fanout_persistence, auto_delete: !subscriber.fanout_persistence)
+        routing_key = exchange_name
 
         AMQP.Queue.declare(channel, queue_name, durable: subscriber.fanout_persistence, auto_delete: !subscriber.fanout_persistence)
+        AMQP.Queue.bind(channel, queue_name, exchange_name, routing_key: routing_key)
 
-        # TODO: Support fanout
-        AMQP.Exchange.direct(channel, exchange_name, durable: true, auto_delete: false)
+        if subscriber.fanout do
+          AMQP.Exchange.fanout(channel, exchange_name, durable: true, auto_delete: false)
+        else
+          AMQP.Exchange.direct(channel, exchange_name, durable: true, auto_delete: false)
+        end
 
         consumer_tag = AMQP.Basic.consume(channel, queue_name)
 
