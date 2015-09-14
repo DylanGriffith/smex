@@ -19,7 +19,7 @@ defmodule SmexTest do
         Smex.Messaging.Subscriber.start(__MODULE__)
       end
 
-      def bootup do
+      def run do
         {:ok, %{mystate: true}}
       end
 
@@ -44,7 +44,7 @@ defmodule SmexTest do
         Smex.Messaging.Subscriber.start(__MODULE__)
       end
 
-      def bootup do
+      def run do
         {:ok, %{mystate: true}}
       end
 

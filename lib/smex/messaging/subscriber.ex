@@ -24,6 +24,7 @@ defmodule Smex.Messaging.Subscriber do
       use GenServer
 
       def init(_opts) do
+        Process.link(:erlang.whereis(Smex.Messaging))
         opts = unquote(opts) |> Enum.into %{}
         subscriber = Map.merge(%Smex.Messaging.Subscriber{}, opts)
         channel = Smex.Messaging.channel
@@ -58,7 +59,7 @@ defmodule Smex.Messaging.Subscriber do
 
         consumer_tag = AMQP.Basic.consume(channel, queue_name)
 
-        {:ok, state} = bootup
+        {:ok, state} = run
         {:ok, %{inner_state: state, subscriber: subscriber, channel: channel}}
       end
 
