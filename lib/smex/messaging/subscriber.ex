@@ -96,12 +96,28 @@ defmodule Smex.Messaging.Subscriber do
           }
           spawn fn -> consume(message) end
         else
-          # TODO: Call handler function. Have default handler function implementation that sends to error queue.
-          raise "unsupported ACL type given with hash: #{type_hash} and type: #{type}"
+          subscriber = state[:subscriber]
+          # We don't care about dead lettering for non persistent fanout
+          # queues.
+          if (!subscriber.fanout || subscriber.fanout_persistence) do
+
+            if subscriber.fanout do
+              error_queue = "#{subscriber.queue_name}.#{subscriber.fanout_queue_suffix}.error"
+            else
+              error_queue = "#{subscriber.queue_name}.error"
+            end
+
+            publisher = %Smex.Messaging.Publisher{destination: error_queue}
+
+            Smex.Messaging.Publisher.publish_raw(publisher, type_hash, payload)
+            Smex.ack(state[:channel], tag)
+          end
+
+          # TODO: This probably warrants logging, but then again Smex has no
+          # logging yet so that needs to be dealt with
         end
         {:noreply, state}
       end
-
     end
   end
 end

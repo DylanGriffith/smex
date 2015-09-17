@@ -1,7 +1,12 @@
 defmodule Smex.Messaging.Publisher do
-  defstruct destination: nil, prefetch: 1, fanout: false, fanout_persistence: true, fanout_queue_suffix: nil
+  defstruct destination: nil, fanout: false
 
   def publish(publisher = %Smex.Messaging.Publisher{}, payload) do
+    type = Map.get(payload, :__struct__)
+    publish_raw(publisher, Smex.ACL.acl_type_hash(type), type.encode(payload))
+  end
+
+  def publish_raw(publisher, type_hash, raw_payload) do
     channel = Smex.Messaging.channel
 
     exchange_name = "smith.#{publisher.destination}"
@@ -18,10 +23,8 @@ defmodule Smex.Messaging.Publisher do
       AMQP.Queue.bind(channel, exchange_name, exchange_name, routing_key: routing_key)
     end
 
-    type = Map.get(payload, :__struct__)
+    opts = [type: type_hash, content_type: "application/octet-stream"]
 
-    opts = [type: Smex.ACL.acl_type_hash(type), content_type: "application/octet-stream"]
-
-    AMQP.Basic.publish(channel, exchange_name, routing_key, type.encode(payload), opts)
+    AMQP.Basic.publish(channel, exchange_name, routing_key, raw_payload, opts)
   end
 end

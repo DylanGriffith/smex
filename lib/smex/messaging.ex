@@ -6,6 +6,9 @@ defmodule Smex.Messaging do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
+  # TODO: We need to support publishing (and probably subscribing) to multiple
+  # rabbitmq exchanges. So this singleton needs to go or we need to be able to
+  # override and get our own Smex.Connection and use that with publish etc.
   def channel do
     GenServer.call(__MODULE__, :channel)
   end
