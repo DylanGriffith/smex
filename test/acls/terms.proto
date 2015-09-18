@@ -1,8 +1,14 @@
 package ACL;
 
 message Term {
+  enum Type {
+    FIRST = 1;
+    SECOND = 2;
+  }
+
   required int32 id = 1;
   required string term = 2;
+  optional Type type = 3;
 }
 
 message Terms {

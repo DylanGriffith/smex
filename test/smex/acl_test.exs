@@ -27,4 +27,9 @@ defmodule Smex.ACL.Test do
 
     assert decoded == update
   end
+
+  test "nested enum" do
+    term = ACL.Term.new(id: 123, term: "my term", type: :SECOND)
+    assert term == ACL.Term.decode(ACL.Term.encode(term))
+  end
 end

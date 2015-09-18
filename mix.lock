@@ -1,6 +1,6 @@
 %{"amqp": {:hex, :amqp, "0.1.1"},
   "amqp_client": {:hex, :amqp_client, "3.5.0"},
-  "exprotobuf": {:git, "git://github.com/DylanGriffith/exprotobuf.git", "2d967b70b6d806101d88dbe22301dd8f0d88b8e0", [branch: "dgvz"]},
+  "exprotobuf": {:git, "git://github.com/DylanGriffith/exprotobuf.git", "b9298759e56b628ef359cab37bea093de6f8ccce", [branch: "dgvz"]},
   "gpb": {:hex, :gpb, "3.18.8"},
   "murmur": {:hex, :murmur, "0.2.1"},
   "rabbit_common": {:hex, :rabbit_common, "3.5.0"}}
