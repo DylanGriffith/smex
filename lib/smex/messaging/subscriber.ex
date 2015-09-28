@@ -85,7 +85,6 @@ defmodule Smex.Messaging.Subscriber do
       def handle_info({:basic_deliver, payload, %{delivery_tag: tag, redelivered: redelivered, type: type_hash}}, state) do
         type = Smex.ACL.acl_type_from_hash(type_hash)
         if type == state[:subscriber].type do
-          # TODO: Consider supporting updating the state somehow from the class using this module.
           message = %{
             state: state[:inner_state],
             channel: state[:channel],
@@ -116,6 +115,7 @@ defmodule Smex.Messaging.Subscriber do
           # TODO: This probably warrants logging, but then again Smex has no
           # logging yet so that needs to be dealt with
         end
+
         {:noreply, state}
       end
     end

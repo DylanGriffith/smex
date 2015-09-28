@@ -25,6 +25,6 @@ defmodule Smex do
   Connection string for rabbitmq.
   """
   def conn_string do
-    System.get_env("RABBITMQ_URL") || "amqp://guest:guest@localhost"
+    Application.get_env(:smex, Smex)[:conn_string] || "amqp://guest:guest@localhost"
   end
 end
