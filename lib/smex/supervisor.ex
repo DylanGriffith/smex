@@ -13,7 +13,6 @@ defmodule Smex.Supervisor do
     # against the already running Smex.Messaging.
     children = [
       worker(Smex.ACL, []),
-      worker(Smex.Messaging, []),
     ]
 
     supervise(children, strategy: :one_for_one)

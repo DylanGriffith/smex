@@ -1,13 +1,12 @@
 defmodule Smex.Messaging.Publisher do
   defstruct destination: nil, fanout: false
 
-  def publish(publisher = %Smex.Messaging.Publisher{}, payload) do
+  def publish(channel, publisher = %Smex.Messaging.Publisher{}, payload) do
     type = Map.get(payload, :__struct__)
-    publish_raw(publisher, Smex.ACL.acl_type_hash(type), type.encode(payload))
+    publish_raw(channel, publisher, Smex.ACL.acl_type_hash(type), type.encode(payload))
   end
 
-  def publish_raw(publisher, type_hash, raw_payload) do
-    channel = Smex.Messaging.channel
+  def publish_raw(%Smex.Messaging.Channel{amqp_channel: channel}, publisher, type_hash, raw_payload) do
 
     exchange_name = "smith.#{publisher.destination}"
     routing_key = exchange_name
