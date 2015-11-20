@@ -1,7 +1,7 @@
 Smex
 ====
 
-A library for simplifying the sending of protocol buffers over rabbitmq. This is
+An Elixir library for simplifying the sending of protocol buffers over rabbitmq. This is
 intended to allow compatible communication with [the more comprehensive ruby
 framework Smith](https://github.com/filterfish/smith2) but this can be used on
 it's own as a way of using protocol buffers and rabbitmq.
