@@ -5,6 +5,7 @@ defmodule Smex.Mixfile do
     [app: :smex,
      version: "0.0.1",
      elixir: "~> 1.0",
+     description: description,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
@@ -18,12 +19,6 @@ defmodule Smex.Mixfile do
       mod: {Smex, []},
       applications: [:logger, :amqp]
     ]
-  end
-
-  defp description do
-    """
-    An Elixir library for simplifying the sending of protocol buffers over rabbitmq.
-    """
   end
 
   # Dependencies can be Hex packages:
@@ -41,5 +36,20 @@ defmodule Smex.Mixfile do
       {:murmur, "~> 0.2"},
       {:exprotobuf, github: "DylanGriffith/exprotobuf", branch: "dgvz"}
     ]
+  end
+
+  # Hex stuff
+  defp description do
+    """
+    An Elixir library for simplifying the sending of protocol buffers over rabbitmq.
+    """
+  end
+
+  defp package do
+    [# These are the default files included in the package
+     files: ["lib", "priv", "mix.exs", "README.md", "LICENSE.txt",],
+     maintainers: ["Dylan Griffith"],
+     licenses: ["MIT"],
+     links: %{"GitHub" => "https://github.com/DylanGriffith/smex"}]
   end
 end
