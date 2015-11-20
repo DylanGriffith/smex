@@ -26,15 +26,15 @@ defmodule Smex do
   @doc """
   Publish to a specific exchange.
   """
-  def publish(channel = %Smex.Messaging.Channel{}, payload, opts) do
-    publisher = Map.merge(%Smex.Messaging.Publisher{}, Enum.into(opts, %{}))
+  def publish(channel = %Smex.Messaging.Channel{}, payload, publisher = %Smex.Messaging.Publisher{}) do
     Smex.Messaging.Publisher.publish(channel, publisher, payload)
   end
 
   @doc """
   Publish to a specific exchange.
   """
-  def publish(channel = %Smex.Messaging.Channel{}, payload, publisher = %Smex.Messaging.Publisher{}) do
+  def publish(channel = %Smex.Messaging.Channel{}, payload, opts) do
+    publisher = Map.merge(%Smex.Messaging.Publisher{}, Enum.into(opts, %{}))
     Smex.Messaging.Publisher.publish(channel, publisher, payload)
   end
 
