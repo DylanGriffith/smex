@@ -34,6 +34,8 @@ message Greeting {
 
 All protocol buffers are compiled to structs.
 
+NOTE: I have to use a forked version of the `exprotobuf` to support the features I needed so you may have problems if you already have `exprotobuf` as a dependency. I will fix this when the proper one has the features I need which seems to at least be in progress.
+
 ### Sending Messages
 Now your ready to start sending messages:
 
