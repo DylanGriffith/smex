@@ -87,3 +87,12 @@ end
 
 Since this is just a standard `GenServer` you can add to any supervision tree
 you want or do any other stuff you can do with a `GenServer`.
+
+## Motivation
+RabbitMQ is awesome and asynchronous message passing is so hot right now. AMQP
+is complicated with lots of features that it forces you to understand even for
+simple use cases. Protocol buffers are fast and efficient data formats and
+translate neatly into elixir structs. This library provides a really
+straightforward way of getting started with these awesome libraries and intends
+to still provide you with the option of utilising more advanced features of
+AMQP when/if you eventually need it.
