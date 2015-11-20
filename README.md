@@ -43,7 +43,11 @@ Now your ready to start sending messages:
 {:ok, connection} = Smex.connect("amqp://guest:guest@localhost")
 
 {:ok, channel} = Smex.open(connection)
-:ok = Smex.publish(channel, PB.Greeting.new(greeting: "Hello, World!"), destination: "smex.test.some_test_queue")
+
+message = PB.Greeting.new(greeting: "Hello, World!")
+queue = "smex.test.some_test_queue"
+
+:ok = Smex.publish(channel, message, destination: queue)
 ```
 
 ### Subscribing In A GenServer
@@ -68,12 +72,12 @@ defmodule MyServer do
   end
 
   # Pattern match just the protocol buffer types you expect on this queue
-  def handle_cast({:smex_message, m = %PB.Greeting{}, meta}, state = %{channel: channel}) do
+  def handle_cast({:smex_message, m = %PB.Greeting{}, meta}, state = %{channel: chan}) do
     IO.puts("Received a PB.Greeting:")
     IO.inspect(m)
 
     # Acknowledge receipt of message. This is necessary.
-    Smex.ack(channel, meta)
+    Smex.ack(chan, meta)
 
     # Standard GenServer return
     {:stop, :normal, state}
