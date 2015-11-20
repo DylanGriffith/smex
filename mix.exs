@@ -34,7 +34,8 @@ defmodule Smex.Mixfile do
     [
       {:amqp, "~> 0.1"},
       {:murmur, "~> 0.2"},
-      {:exprotobuf, github: "DylanGriffith/exprotobuf", branch: "dgvz"}
+      {:exprotobuf, github: "DylanGriffith/exprotobuf", branch: "dgvz"},
+      {:ex_doc, "~> 0.11", only: :dev},
     ]
   end
 
