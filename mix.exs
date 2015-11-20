@@ -20,6 +20,12 @@ defmodule Smex.Mixfile do
     ]
   end
 
+  defp description do
+    """
+    An Elixir library for simplifying the sending of protocol buffers over rabbitmq.
+    """
+  end
+
   # Dependencies can be Hex packages:
   #
   #   {:mydep, "~> 0.3.0"}
