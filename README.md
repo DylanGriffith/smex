@@ -8,8 +8,8 @@ it's own as a way of using protocol buffers and rabbitmq.
 
 ## Usage
 
-### Add Dependendencies & Application
-Add this library to your dependendencies like `{:smex, github: "DylanGriffith/smex"}`. Then add `:smex` to your applications.
+### Add Dependencies & Application
+Add this library to your dependencies like `{:smex, github: "DylanGriffith/smex"}`. Then add `:smex` to your applications.
 
 ### Configure The Location Of Your Protocol Buffers
 You will also need your own protocol buffers in some directory then configure
