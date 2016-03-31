@@ -1,6 +1,8 @@
 defmodule Smex.ACL do
 
-  use Protobuf, from: Path.expand(Path.expand(Application.get_env(:smex, :protobuf_dir) <> "/*.proto", __DIR__))
+  use Protobuf, from: Path.wildcard(Application.get_env(:smex, :protobuf_dir) <> "/*.proto"),
+    use_package_names: true,
+    namespace: :"Elixir"
 
   def start_link do
     pid = Agent.start_link(fn -> HashDict.new end, name: :acl_cache)

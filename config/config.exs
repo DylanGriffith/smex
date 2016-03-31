@@ -24,4 +24,4 @@ use Mix.Config
 #     import_config "#{Mix.env}.exs"
 
 config :smex,
-  protobuf_dir: "test/acls/"
+  protobuf_dir: Path.expand("test/acls/", Path.join(__DIR__, ".."))
